@@ -89,7 +89,7 @@ while True:
             listOfIps.append(ip['ip'])
 
     ## if block for UPdate output of create of list need to be checked with ipinfo
-    logger.info("Getting" + str(len(listOfIps)) + " IP's Results from DB")
+    logger.info("Getting " + str(len(listOfIps)) + " IP's Results from MariaDB")
     if len(listOfIps) > 0:
         format_strings = ','.join(['%s'] * len(listOfIps))
         cur.execute(
@@ -106,8 +106,7 @@ while True:
     ipInfoList=[]
     # 
     ## ipinfo task 
-    logger.info("Getting" + str(len(dbResult)) + " IP's Results from IpInfo")
-    ipinfoToken=v_ipToken
+    logger.info("Got " + str(len(dbResult)) + " IP's Results from MariaDB")
     if len(dbResult) > 0:
         for ip in jsonList:
             # add data from DB and arrange to a list.
@@ -124,7 +123,8 @@ while True:
             elif ip['ip'] not in ipInfoList:
                 ipInfoList.append(ip['ip'])
     if len(ipInfoList) > 0:
-        handler = ipinfo.getHandler(ipinfoToken)
+        logger.info("Starting process to get " + str(len(ipInfoList)) + " IP's Results from IPinfo")
+        handler = ipinfo.getHandler(v_ipToken)
         response=handler.getBatchDetails(ipInfoList)
         for ip in ipInfoList:
             if ip == response[ip]['ip'] and ip not in lst:
@@ -137,14 +137,19 @@ while True:
                     if attrs['ip'] == ip and attrs['timeStamp'] not in lst[len(lst) - 1]:
                         lst.append(attrs['featchDate'])
                         lst.append(attrs['timeStamp'])
-
+    logger.info("adding " + str(len(lst)) + " Records to MariaDB")
     lst_tuple = [x for x in zip(*[iter(lst)]*7)]
-    logger.info("Uploading results to DB")
+    logger.info("Start Uploading results to DB")
     ##worke mysql push regestry
-    cur = conn.cursor()
-    cur.executemany("INSERT INTO " + v_dbTable + " (clientIP,clientState,ClientCity,ClientLatitude,ClientLongitude,featchDate,timeStamp) VALUES (%s, %s, %s, %s, %s, %s, %s)", lst_tuple)
-    conn.commit()
-    conn.close()
-    logger.info("End Run...")
+    try:
+        cur = conn.cursor()
+        cur.executemany("INSERT INTO " + v_dbTable + " (clientIP,clientState,ClientCity,ClientLatitude,ClientLongitude,featchDate,timeStamp) VALUES (%s, %s, %s, %s, %s, %s, %s)", lst_tuple)
+        conn.commit()
+        conn.close()
+        logger.info("records Updated Succesfully")
+        logger.info("End Run...")
+    except mariadb.Error as e:
+        logger.debug('Unable to Insert List from response '+ e)
+        sys.exit(1)
     logger.info("Start SLEEP 300s")
     time.sleep(300)
