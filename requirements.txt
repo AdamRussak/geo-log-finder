@@ -1,0 +1,4 @@
+ipinfo>=4.2.1
+typing-extensions>=3.10.0
+mariadb>=1.0.8
+loguru>=0.5.3

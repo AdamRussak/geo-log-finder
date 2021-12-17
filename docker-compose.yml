@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  geo-log-finder:
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: geo-log-finder
+    restart: always
+    environment:
+        - logLocation=/opt/log/<NameOfAccesLog>
+        - dbUser=${_APP_DB_PASS}
+        - dbPass=${_APP_DB_PASS}
+        - dbHost=grafana-mariadb
+        - dbPort=${_APP_DB_PORT}
+        - dbName=${_GRAFANA_DB_SCHEMA}
+        - dbTable=${_GRAFANA_DB_TABLE}
+        - ipinfoToken=${_IP_INFO_TOKEN}
+    volumes:
+        - /path/to/AccesLog/in/host:/opt/log:ro
+  grafana-mariadb:
+    image: mariadb:10.7.1
+    container_name: grafana-mariadb
+    restart: unless-stopped
+    volumes:
+    - grafana-mariadb:/var/lib/mysql:rw
+    ports:
+      - "3306:3306" #needed only for User Access, you can remove this part and the proccess will still work
+    environment:
+      - MYSQL_ROOT_PASSWORD=${_APP_DB_ROOT_PASS}
+      - MYSQL_DATABASE=${_GRAFANA_DB_SCHEMA}
+      - MYSQL_USER=${_APP_DB_USER}
+      - MYSQL_PASSWORD=${_APP_DB_PASS}
+    command: 'mysqld --innodb-flush-method=fsync'
+  grafana-ui:
+    image: grafana/grafana
+    restart: always
+    container_name: grafana-ui
+    ports:
+      - "3000:3000"
