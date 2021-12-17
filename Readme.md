@@ -1,4 +1,5 @@
 # Geo-log-finder
+![Grafana GeoMap](./support/grafana-geoMap.png)
 
 ## About:
 This Setup allows you to use the  [Traefik Access Logs](https://doc.traefik.io/traefik/observability/access-logs/) in [Grafana GeoMap](https://grafana.com/docs/grafana/latest/visualizations/geomap/).<br>
