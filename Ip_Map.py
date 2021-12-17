@@ -122,6 +122,11 @@ while True:
                         lst.append(ip['timeStamp'])
             elif ip['ip'] not in ipInfoList:
                 ipInfoList.append(ip['ip'])
+    else:
+        logger.info("All New IP's")
+        logger.info("adding all " + len(jsonList) + " Records to IPinfo Call")
+        for ip in jsonList:
+            ipInfoList.append(ip['ip'])
     if len(ipInfoList) > 0:
         logger.info("Starting process to get " + str(len(ipInfoList)) + " IP's Results from IPinfo")
         handler = ipinfo.getHandler(v_ipToken)
