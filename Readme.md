@@ -125,3 +125,22 @@ CREATE USER 'grafana_readonly'@'%' IDENTIFIED BY 'veryComplaxPassword!';
 GRANT SELECT ON grafana.* TO 'grafana_readonly'@'%';
 FLUSH PRIVILEGES;
  ```
+
+ ### Grafana Data Source:
+ * set MariaDB as a MySQL data Source
+    * host: "`<container-Name>:3306`"
+    * Database: "`<DB Name>`"
+    * User: "`MariaDB user`"
+ ### Grafana Query:
+ ```sql
+ SELECT
+UNIX_TIMESTAMP(`timeStamp`) as time_sec,
+  `ClientLatitude` as latitude,
+  `ClientLongitude` as longitude,
+  COUNT(`clientIP`) AS value,
+  `clientIP` as name
+FROM treafikAccessList_tbl
+WHERE $__timeFilter(`timeStamp`)
+GROUP BY `clientIP`
+ORDER BY `timeStamp` ASC
+ ```
