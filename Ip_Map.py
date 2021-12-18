@@ -124,7 +124,7 @@ while True:
                 ipInfoList.append(ip['ip'])
     else:
         logger.info("All New IP's")
-        logger.info("adding all " + len(jsonList) + " Records to IPinfo Call")
+        logger.info("adding all " + str(len(jsonList)) + " Records to IPinfo Call")
         for ip in jsonList:
             ipInfoList.append(ip['ip'])
     if len(ipInfoList) > 0:
