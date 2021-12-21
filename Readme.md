@@ -32,7 +32,20 @@ using only:
     - /path/to/AccesLog/in/host:/opt/logs
 
  ```
-
+#### Set Logrotate:
+1. on your HOST open logrotate.conf, usaly at: `/etc/logrotate.conf`
+2. add a logrotate config:
+```bash
+/path/to/logs/on/host/*.log {
+  size 5M
+  create 644 root root
+  rotate 5
+  notifempty
+  postrotate
+        sudo docker kill --signal="USR1" <TreafikContianerName>
+  endscript
+}
+```
 ### ipinfo:
 the Python Script uses ipinfo API.<br>
 to login go to https://ipinfo.io/<br>
