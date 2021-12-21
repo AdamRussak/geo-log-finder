@@ -57,10 +57,14 @@ while True:
             arryJson += str(row)+","
         else:
             arryJson += str(row)
-    logger.info("Log got " + str(counter) + " Rows")
+    
     arryJson += "]"
     f.close()
-    data = json.loads(arryJson)
+    try:
+        data = json.loads(arryJson)
+        logger.info("Log got " + str(counter) + " Rows")
+    except:
+        logger.error("Error Loading the Logs")
     jsonList = []
     for i in data:
         if not ipaddress.ip_address(str(i['ClientHost']) ).is_private:

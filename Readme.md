@@ -46,6 +46,7 @@ using only:
   endscript
 }
 ```
+> link for [logrotate man page](https://linux.die.net/man/8/logrotate)
 ### ipinfo:
 the Python Script uses ipinfo API.<br>
 to login go to https://ipinfo.io/<br>
