@@ -77,6 +77,7 @@ while True:
                     inputRow = {"ip":iIP,"featchDate": featchDate, "timeStamp": timeStamp}
                     dump = json.dumps(inputRow)
                     jsonList.append(json.loads(dump))
+    logger.info("Inspecting " + str(len(jsonList)) + " Out of " + str(counter) + " Log Rows")
     # Connect to MariaDB Platform
     try:
         conn = mariadb.connect(
