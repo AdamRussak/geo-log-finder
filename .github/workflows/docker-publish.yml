@@ -42,5 +42,5 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            techblog/geo-log-fonder:latest
-            techblog/geo-log-fonder:${{ steps.getSemver.outputs.semver }}       
+            techblog/geo-log-finder:latest
+            techblog/geo-log-finder:${{ steps.getSemver.outputs.semver }}       
