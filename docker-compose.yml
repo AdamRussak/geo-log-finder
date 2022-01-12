@@ -15,7 +15,6 @@ services:
         - dbPort=${_APP_DB_PORT}
         - dbName=${_GRAFANA_DB_SCHEMA}
         - dbTable=${_GRAFANA_DB_TABLE}
-        - ipinfoToken=${_IP_INFO_TOKEN}
     volumes:
         - /path/to/AccesLog/in/host:/opt/log:ro
   grafana-mariadb:
