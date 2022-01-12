@@ -49,10 +49,6 @@ using only:
 }
 ```
 > link for [logrotate man page](https://linux.die.net/man/8/logrotate)
-### ipinfo:
-the Python Script uses ipinfo API.<br>
-to login go to https://ipinfo.io/<br>
- > **_NOTE:_** the free Tier gives you 50K free API calls per month.
 
 ## Spin-up:
 #### Must-have Environment variables:
@@ -63,7 +59,6 @@ to login go to https://ipinfo.io/<br>
 - dbPort
 - dbTable
 - dbName
-- ipinfoToken
 
 ### Grafan-Setup:
 * Clone the Repo
@@ -97,7 +92,6 @@ services:
         - dbPort=${_APP_DB_PORT}
         - dbName=${_GRAFANA_DB_SCHEMA}
         - dbTable=${_GRAFANA_DB_TABLE}
-        - ipinfoToken=${_IP_INFO_TOKEN}
     volumes:
         - /path/to/AccesLog/in/host:/opt/log:ro
   grafana-mariadb:
@@ -120,6 +114,13 @@ services:
     container_name: grafana-ui
     ports:
       - "3000:3000"
+  freegeoip: #https://github.com/t0mer/freegeoip
+    image: techblog/freegeoip
+    container_name: freegeoip
+    ports:
+      - "8080:8080"
+      - "8888:8888"
+    restart: always
 ```
 ## Post-Spin-up:
 * create Table inside MariaDB:

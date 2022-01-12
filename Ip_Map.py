@@ -22,7 +22,6 @@ v_host = os.getenv('dbHost')
 v_port = os.getenv('dbPort')
 v_database = os.getenv('dbName')
 v_dbTable = os.getenv('dbTable')
-v_ipToken = os.getenv('ipinfoToken')
 v_dbBaseUrl = "http://freegeoip:8080"
 # func to check list of ip already in it or not
 def checkDuplicate(list, listValue, jsonInput, jsonInputValue):
@@ -99,7 +98,7 @@ while True:
         for ip in jsonList:
             listOfIps.append(ip['ip'])
 
-    ## if block for UPdate output of create of list need to be checked with ipinfo
+    ## if block for UPdate output of create of list need to be checked with freeGeoIP
     logger.info("Getting " + str(len(listOfIps)) + " IP's Results from MariaDB")
     if len(listOfIps) > 0:
         format_strings = ','.join(['%s'] * len(listOfIps))

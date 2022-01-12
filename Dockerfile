@@ -8,7 +8,6 @@ ENV dbPass ""
 ENV dbHost ""
 ENV dbPort ""
 ENV dbName ""
-ENV ipinfoToken ""
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./
