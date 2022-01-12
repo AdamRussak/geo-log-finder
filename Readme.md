@@ -1,3 +1,5 @@
+[![release](https://github.com/AdamRussak/geo-log-finder/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/AdamRussak/geo-log-finder/actions/workflows/docker-publish.yml)
+
 # Geo-log-finder
 ![Grafana GeoMap](./support/grafana-geoMap.png)
 
