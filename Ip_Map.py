@@ -4,7 +4,6 @@
 import json
 from typing import Counter, Mapping
 from datetime import datetime 
-import ipinfo
 #push to MariaDB - grafana talbe:
 import mariadb
 import sys
@@ -13,6 +12,7 @@ import os
 import ipaddress
 import time
 from loguru import logger
+import requests
 
 ## Env vars to use in Task:
 v_accesLogs = os.getenv('logLocation')
@@ -23,7 +23,7 @@ v_port = os.getenv('dbPort')
 v_database = os.getenv('dbName')
 v_dbTable = os.getenv('dbTable')
 v_ipToken = os.getenv('ipinfoToken')
-
+v_dbBaseUrl = "http://freegeoip:8080"
 # func to check list of ip already in it or not
 def checkDuplicate(list, listValue, jsonInput, jsonInputValue):
     if len(list) == 1:
@@ -136,27 +136,29 @@ while True:
                 ipInfoList.append(ip['ip'])
     else:
         logger.info("All New IP's")
-        logger.info("Adding all " + str(len(jsonList)) + " Records to IPinfo Call")
+        logger.info("Adding all " + str(len(jsonList)) + " Records to FreeGeoIp Call")
         for ip in jsonList:
             ipInfoList.append(ip['ip'])
     if len(ipInfoList) > 0:
-        logger.info("Starting process to get " + str(len(ipInfoList)) + " IP's Results from IPinfo")
-        handler = ipinfo.getHandler(v_ipToken)
-        response = handler.getBatchDetails(ipInfoList)
+        logger.info("Starting process to get " + str(len(ipInfoList)) + " IP's Results from FreeGeoIp")
         for ip in ipInfoList:
-            if ip == response[ip]['ip'] and ip not in lst:
-                lst.append(response[ip]['ip'])
-                lst.append(response[ip]['country'])
-                lst.append(response[ip]['city'])
-                lst.append(response[ip]['latitude'])
-                lst.append(response[ip]['longitude'])
+            logger.info("Checking " + str(ip) + " in FreeGeoIp")
+            response = requests.get(v_dbBaseUrl + "/json/" + ip)
+            response = response.json()
+            if ip == response['ip'] and ip not in lst:
+                logger.info("adding Records for " + str(ip) + " to list")
+                lst.append(response['ip'])
+                lst.append(response['country_name'])
+                lst.append(response['city'])
+                lst.append(str(response['latitude']))
+                lst.append(str(response['longitude']))
                 for attrs in jsonList:
                     if attrs['ip'] == ip and attrs['timeStamp'] not in lst[len(lst) - 1]:
                         lst.append(attrs['featchDate'])
                         lst.append(attrs['timeStamp'])
     if len(lst) > 0:
-        logger.info("Adding " + str(len(lst)) + " Records to MariaDB")
         lst_tuple = [x for x in zip(*[iter(lst)]*7)]
+        logger.info("Adding " + str(len(lst_tuple)) + " Records to MariaDB")
         logger.info("Start Uploading results to DB")
         ##worke mysql push regestry
         try:
