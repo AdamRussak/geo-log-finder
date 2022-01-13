@@ -81,9 +81,7 @@ version: "3.8"
 
 services:
   geo-log-finder:
-    build: 
-      context: .
-      dockerfile: ./Dockerfile
+    image: techblog/geo-log-finder
     container_name: geo-log-finder
     restart: always
     environment:
