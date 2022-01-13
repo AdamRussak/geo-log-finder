@@ -8,6 +8,7 @@ ENV dbPass ""
 ENV dbHost ""
 ENV dbPort ""
 ENV dbName ""
+ENV geoIpUrl ""
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./

@@ -9,7 +9,8 @@ using only:
 - Docker
 - Docker-Compose
 - mariaDB 
-- my Python Container.
+- [techblog/freegeoip](https://github.com/t0mer/freegeoip)
+- Geo-log-finder Container.
 
 ![geo-log-finder](./support/geo-log-finder.jpg)
 ## Pre-Spin up:
@@ -59,6 +60,7 @@ using only:
 - dbPort
 - dbTable
 - dbName
+- geoIpUrl
 
 ### Grafan-Setup:
 * Clone the Repo
@@ -92,6 +94,7 @@ services:
         - dbPort=${_APP_DB_PORT}
         - dbName=${_GRAFANA_DB_SCHEMA}
         - dbTable=${_GRAFANA_DB_TABLE}
+        - geoIpUrl=${_GEO_IP_URL}
     volumes:
         - /path/to/AccesLog/in/host:/opt/log:ro
   grafana-mariadb:

@@ -15,8 +15,16 @@ services:
         - dbPort=${_APP_DB_PORT}
         - dbName=${_GRAFANA_DB_SCHEMA}
         - dbTable=${_GRAFANA_DB_TABLE}
+        - geoIpUrl=${_GEO_IP_URL}
     volumes:
         - /path/to/AccesLog/in/host:/opt/log:ro
+  freegeoip: #https://github.com/t0mer/freegeoip
+    image: techblog/freegeoip
+    container_name: freegeoip
+    ports:
+      - "8080:8080"
+      - "8888:8888"
+    restart: always
   grafana-mariadb:
     image: mariadb:10.7.1
     container_name: grafana-mariadb
