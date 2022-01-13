@@ -22,7 +22,7 @@ v_host = os.getenv('dbHost')
 v_port = os.getenv('dbPort')
 v_database = os.getenv('dbName')
 v_dbTable = os.getenv('dbTable')
-v_dbBaseUrl = "http://freegeoip:8080"
+v_dbBaseUrl = os.getenv('geoIpUrl')
 # func to check list of ip already in it or not
 def checkDuplicate(list, listValue, jsonInput, jsonInputValue):
     if len(list) == 1:
