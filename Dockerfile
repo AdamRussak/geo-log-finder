@@ -9,6 +9,7 @@ ENV dbHost ""
 ENV dbPort ""
 ENV dbName ""
 ENV geoIpUrl ""
+ENV sleepTime ""
 WORKDIR /usr/src/app
 
 COPY requirements.txt ./

@@ -93,6 +93,7 @@ services:
         - dbName=${_GRAFANA_DB_SCHEMA}
         - dbTable=${_GRAFANA_DB_TABLE}
         - geoIpUrl=${_GEO_IP_URL}
+        - sleepTime=${_SLEEP_TIME}
     volumes:
         - /path/to/AccesLog/in/host:/opt/log:ro
   grafana-mariadb:
