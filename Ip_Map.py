@@ -23,6 +23,7 @@ v_port = os.getenv('dbPort')
 v_database = os.getenv('dbName')
 v_dbTable = os.getenv('dbTable')
 v_dbBaseUrl = os.getenv('geoIpUrl')
+v_sleepTime = os.getenv('sleepTime')
 # func to check list of ip already in it or not
 def checkDuplicate(list, listValue, jsonInput, jsonInputValue):
     if len(list) == 1:
@@ -61,7 +62,7 @@ while True:
     f.close()
     try:
         data = json.loads(arryJson)
-        logger.info("Log got " + str(counter) + " Rows")
+        logger.info("Got " + str(counter) + " Access Log Rows")
     except:
         logger.error("Error Loading the Logs")
     jsonList = []
@@ -76,7 +77,7 @@ while True:
                     inputRow = {"ip":iIP,"featchDate": featchDate, "timeStamp": timeStamp}
                     dump = json.dumps(inputRow)
                     jsonList.append(json.loads(dump))
-    logger.info("Inspecting " + str(len(jsonList)) + " Out of " + str(counter) + " Log Rows")
+    logger.info("Inspecting " + str(len(jsonList)) + " IP's Out of " + str(counter) + " Access Log Rows")
     # Connect to MariaDB Platform
     try:
         conn = mariadb.connect(
@@ -99,7 +100,7 @@ while True:
             listOfIps.append(ip['ip'])
 
     ## if block for UPdate output of create of list need to be checked with freeGeoIP
-    logger.info("Getting " + str(len(listOfIps)) + " IP's Results from MariaDB")
+    logger.info("Trying to Get " + str(len(listOfIps)) + " IP's from DB")
     if len(listOfIps) > 0:
         format_strings = ','.join(['%s'] * len(listOfIps))
         cur.execute(
@@ -116,7 +117,7 @@ while True:
     ipInfoList = []
     # 
     ## ipinfo task 
-    logger.info("Got " + str(len(dbResult)) + " IP's Results from MariaDB")
+    logger.info("Got " + str(len(dbResult)) + " Results from DB")
     if len(dbResult) > 0:
         for ip in jsonList:
             # add data from DB and arrange to a list.
@@ -124,6 +125,7 @@ while True:
             if isListed == "update":
                 for listing in dbResult:
                     if ip['ip'] == listing['clientIP'] and ip['ip'] not in lst:
+                        logger.info("Updating record for " + str(ip['ip']))
                         lst.append(listing['clientIP'])
                         lst.append(listing['clientState'])
                         lst.append(listing['ClientCity'])
@@ -131,8 +133,10 @@ while True:
                         lst.append(listing['ClientLongitude'])
                         lst.append(ip['featchDate'])
                         lst.append(ip['timeStamp'])
+                        logger.info("Got " + str(len(lst)) + " Records from DB")
             elif isListed == "new" and ip['ip'] not in ipInfoList:
                 ipInfoList.append(ip['ip'])
+                logger.info("Adding to new record list: " + str(ip['ip']))
     else:
         logger.info("All New IP's")
         logger.info("Adding all " + str(len(jsonList)) + " Records to FreeGeoIp Call")
@@ -145,7 +149,7 @@ while True:
             response = requests.get(v_dbBaseUrl + "/json/" + ip)
             response = response.json()
             if ip == response['ip'] and ip not in lst:
-                logger.info("adding Records for " + str(ip) + " to list")
+                logger.info("New Records for " + str(ip))
                 lst.append(response['ip'])
                 lst.append(response['country_name'])
                 lst.append(response['city'])
@@ -172,5 +176,5 @@ while True:
     else:
         logger.info("No Records to Update")
     logger.info("End Run...")
-    logger.info("Start SLEEP 300s")
-    time.sleep(300)
+    logger.info("Start SLEEP " + str(v_sleepTime) + " Seconds")
+    time.sleep(float(v_sleepTime))
