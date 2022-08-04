@@ -1,17 +1,17 @@
-import json,ipaddress,time,requests
+import json,ipaddress,time,requests,os
 import mysql.connector
 from loguru import logger
 from ipinfo import ipinfo
 
-v_accesLogs = 'traefik.json'   #os.getenv('_LOG_PATH')
-v_user = 'grafana'#os.getenv('_APP_DB_USER')
-v_password = 'T0mer!2405-77'#os.getenv('_APP_DB_PASS')
-v_host = '192.168.0.252'#os.getenv('_APP_DB_HOST')
-v_port = 3306#os.getenv('_APP_DB_PORT')
-v_database = 'grafana' #os.getenv('_GRAFANA_DB_SCHEMA')
-v_dbTable = 'grafana' #os.getenv('_GRAFANA_DB_TABLE')
-v_geoIPUrl = 'https://geo.techblog.co.il' #os.getenv('_GEO_IP_URL')
-v_sleepTime = 15# os.getenv('_SLEEP_TIME')
+v_accesLogs = os.getenv('LOG_PATH')
+v_user = os.getenv('DB_USER')
+v_password = os.getenv('DB_PASS')
+v_host = os.getenv('DB_HOST')
+v_port = os.getenv('DB_PORT')
+v_database = os.getenv('DB_NAME')
+v_dbTable = os.getenv('TABLE_NAME')
+v_geoIPUrl = os.getenv('GEO_IP_URL')
+v_sleepTime = os.getenv('SLEEP_TIME')
 
 #Get ip info from GeoIP service
 def get_ip_info(ip):
