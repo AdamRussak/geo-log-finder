@@ -14,7 +14,7 @@ services:
         - DB_NAME=${DB_NAME}
         - TABLE_NAME=${TABLE_NAME}
         - GEO_IP_URL=${GEO_IP_URL}
-        - sleepTime=${SLEEP_TIME}
+        - SLEEP_TIME=${SLEEP_TIME}
     volumes:
         - /path/to/AccesLog/in/host:/opt/log:ro
   freegeoip: #https://github.com/t0mer/freegeoip
