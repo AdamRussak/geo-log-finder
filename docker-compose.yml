@@ -6,15 +6,15 @@ services:
     container_name: geo-log-finder
     restart: always
     environment:
-        - logLocation=/opt/log/<NameOfAccesLog>
-        - dbUser=${_APP_DB_PASS}
-        - dbPass=${_APP_DB_PASS}
-        - dbHost=grafana-mariadb
-        - dbPort=${_APP_DB_PORT}
-        - dbName=${_GRAFANA_DB_SCHEMA}
-        - dbTable=${_GRAFANA_DB_TABLE}
-        - geoIpUrl=${_GEO_IP_URL}
-        - sleepTime=${_SLEEP_TIME}
+        - LOG_PATH=${LOG_PATH}
+        - DB_USER=${DB_USER}
+        - DB_PASS=${DB_PASS}
+        - DB_HOST=${DB_HOST}
+        - DB_PORT=${DB_PORT}
+        - DB_NAME=${DB_NAME}
+        - TABLE_NAME=${TABLE_NAME}
+        - GEO_IP_URL=${GEO_IP_URL}
+        - sleepTime=${SLEEP_TIME}
     volumes:
         - /path/to/AccesLog/in/host:/opt/log:ro
   freegeoip: #https://github.com/t0mer/freegeoip
