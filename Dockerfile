@@ -1,5 +1,5 @@
 FROM python:3.9-slim
-LABEL maintainer="adamrussak@gmail.com"
+LABEL maintainer="adamrussak@gmail.com & tomer.klein@gmail.com"
 ENV PYTHONIOENCODING=utf-8
 ENV LANG=C.UTF-8
 ENV logLocation ""
@@ -10,15 +10,16 @@ ENV dbPort ""
 ENV dbName ""
 ENV geoIpUrl ""
 ENV sleepTime ""
-WORKDIR /usr/src/app
+
+RUN mkdir -p /opt/geo-logger
+
+WORKDIR /opt/geo-logger
 
 COPY requirements.txt ./
 RUN apt-get update -y \
-    && apt-get install -y gcc libmariadb-dev  \
     && pip install --upgrade pip \
-    && pip install discord \
     && python3 -m pip install --no-cache-dir -r requirements.txt
-RUN pwd && ls -alh
-COPY Ip_Map.py ./
 
-CMD [ "python", "/usr/src/app/Ip_Map.py" ]
+COPY geo-logger /opt/geo-logger
+
+CMD [ "python", "/opt/geo-logger/logger.py" ]
