@@ -2,14 +2,15 @@ FROM python:3.9-slim
 LABEL maintainer="adamrussak@gmail.com & tomer.klein@gmail.com"
 ENV PYTHONIOENCODING=utf-8
 ENV LANG=C.UTF-8
-ENV logLocation ""
-ENV dbUser ""
-ENV dbPass ""
-ENV dbHost ""
-ENV dbPort ""
-ENV dbName ""
-ENV geoIpUrl ""
-ENV sleepTime ""
+ENV GEO_IP_URL ""
+ENV DB_USER ""
+ENV DB_PASS ""
+ENV DB_HOST ""
+ENV DB_PORT ""
+ENV GRAFANA_DB_NAME ""
+ENV GRAFANA_TABLE_NAME ""
+ENV SLEEP_TIME ""
+ENV LOG_PATH ""
 
 RUN mkdir -p /opt/geo-logger
 
